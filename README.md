@@ -14,6 +14,8 @@ Rename the crated folder to "ESP_LoRa" and copy the file "ESP_LoRa.ino" in to it
 
 # Usage:
 
+SX127x(NumberOfModules) // two suported at the moment not verified
+
 SX127x.single(Module#, address byte, data byte, (R)ead or (W)rite) // Works sort of
 
 SX127x.burst TODO
