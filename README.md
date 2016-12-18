@@ -12,5 +12,12 @@ Create a new folder under C:\Users\User\Documents\Arduino (replace User with our
 
 Rename the crated folder to "ESP_LoRa" and copy the file "ESP_LoRa.ino" in to it
 
+# Usage:
+
+# SX127x.single(Module#, address byte, data byte, (R)ead or (W)rite) // Works sort of
+
+SX127x.burst TODO
+
+SX127x.fifo TODO
 
 //Agge
