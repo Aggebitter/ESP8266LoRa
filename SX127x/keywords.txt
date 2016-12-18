@@ -6,14 +6,15 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-Test	KEYWORD1
+SX127x	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-doSomething	KEYWORD2
-
+single	KEYWORD2
+burst   KEYWORD2
+fifo    KEYWORD2
 #######################################
 # Instances (KEYWORD2)
 #######################################
@@ -21,4 +22,5 @@ doSomething	KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
+
 

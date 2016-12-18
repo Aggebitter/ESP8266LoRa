@@ -55,10 +55,8 @@ SX127x::SX127x(uint8_t NumberOfModules)//! Set the chip selects and if used inte
     }
 }
 
-uint8_t SX127x::init(uint8_t moDule, uint8_t registerSetting, uint8_t value, uint8_t ReadOrWrite)
+uint8_t SX127x::single(uint8_t moDule, uint8_t address, uint8_t value, uint8_t ReadOrWrite)//! (Module#, address byte, data byte, (R)ead or (W)rite)
 {
-
-// _registerSetting = registerSetting;
 
     if (SX1272_debug_mode == 1 )
     {
@@ -83,55 +81,62 @@ uint8_t SX127x::init(uint8_t moDule, uint8_t registerSetting, uint8_t value, uin
 
     if (_moDule == 1)
     {
-        //! Set up SPI for SX127x
-        SPI.begin();
-        SPI.setBitOrder(MSBFIRST);
-        SPI.setFrequency(5000000); // for ESP8266
-        SPI.setDataMode(SPI_MODE0);
-
-        //! Enable SX127x
-        digitalWrite (_sx1276SelectPin_A, HIGH);
-
-        //! Do the transfer on SPI
-        if (ReadOrWrite == 1)
-        {
-            bitSet(registerSetting, 7);			//! Bit 7 Write to registers
-        }
-        SPI.transfer(registerSetting);
-        SPI.transfer(value);
-
-        //ackModule = SPI.transfer(0);        delay(100);
-        //! Release SX127x
-        digitalWrite (_sx1276SelectPin_A, LOW);
-
-        if (SX1272_debug_mode == 1 )
-        {
-            Serial.print("init Module A with: 0x");
-            Serial.print(registerSetting, HEX);
-            Serial.print(", ");
-            Serial.println(value, HEX);
-
-        }
-        state = 1; // Init Module A
+        _sx1276SelectPin = _sx1276SelectPin_A;
     }
-
-    if (_moDule == 2 && _NumberOfModules >= 2)
+    if (_moDule == 2)
     {
-
-        SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0)); // set up hardware SPI for SX127x
-
-        if (SX1272_debug_mode == 1 )
-        {
-            Serial.println("init Module B");
-        }
-        state = 2; // Init Module A
+        _sx1276SelectPin = _sx1276SelectPin_B;
     }
+    //! Set up SPI for SX127x
+    SPI.begin();
+    SPI.setBitOrder(MSBFIRST);
+    SPI.setFrequency(1000000); // for ESP8266
+    SPI.setDataMode(SPI_MODE0);
+
+    //! Enable SX127x
+    digitalWrite (_sx1276SelectPin, HIGH);
+    delay(35); //! NSS setup time, From NSS falling edge to SCK rising edge. 30ns SX1276-79 spec
+
+    //! Do the transfer on SPI
+    if (ReadOrWrite == 1)
+    {
+        bitSet(address, 7);			//! Bit 7 Write to registers
+    }
+
+    //! Create an 16bit message for SPI data form address and value
+    uint16_t message = ( address << 8) | value  ; // Register settings first
+
+    Serial.print("Sent message 16 bit:");
+    Serial.print(message, BIN);
+    Serial.print("    Got reply:");
+    Serial.println(SPI.transfer16(message), BIN);
+    delay(105); //! NSS hold time, From SCK falling edge to NSS rising edge, normal mode 100ns SX1276-79 spec
+
+    // ackModule = SPI.transfer(0);        delay(100);
+    //! Release SX127x
+    digitalWrite (_sx1276SelectPin, LOW);
+
+    if (SX1272_debug_mode == 1 )
+    {
+        Serial.print("init Module:");
+        Serial.print(_moDule);
+        Serial.print(" with: 0x");
+        Serial.print(address, HEX);
+        Serial.print(", ");
+        Serial.print(value, HEX);
+        Serial.print(" Response :");
+        Serial.println(ackModule, HEX);
+
+    }
+    state = 1; // Init Module #
+
+
     SPI.end();
     return state;
     delay(25);
 }
 
-uint8_t SX127x::TX()
+uint8_t SX127x::burst()
 {
     SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0)); // set up hardware SPI for SX127x
     if (SX1272_debug_mode == 1)
@@ -142,7 +147,7 @@ uint8_t SX127x::TX()
     delay(250);
     return state;
 }
-uint8_t SX127x::RX()
+uint8_t SX127x::fifo()
 {
     SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0)); // set up hardware SPI for SX127x
     delay(250);
