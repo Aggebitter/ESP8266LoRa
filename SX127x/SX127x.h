@@ -44,25 +44,25 @@
 class SX127x
 {
   public:
-    SX127x(int NumberOfModules);
-    int init(int moDule, uint8_t registerSetting, uint8_t value, uint8_t ReadOrWrite);
-    int TX();
-    int RX();
-    int state;
-    int moDule;
+    SX127x(uint8_t NumberOfModules);
+    uint8_t init(uint8_t moDule, uint8_t registerSetting, uint8_t value, uint8_t ReadOrWrite);
+    uint8_t TX();
+    uint8_t RX();
+    uint8_t state;
+    uint8_t moDule;
     uint8_t registerSetting;
     uint8_t value;
     uint8_t ReadOrWrite;
     uint8_t ackModule;
-  private:
-    int _NumberOfModules;
-    int _sx1276SelectPin_A;
-    int _sx1276SelectPin_B;
-    int _DIO0_A;
-    int _DIO5_A;
-    int _DIO0_B;
-    int _DIO5_B;
-    int _moDule;
+  protected:
+    uint8_t _NumberOfModules;
+    uint8_t _sx1276SelectPin_A;
+    uint8_t _sx1276SelectPin_B;
+    uint8_t _DIO0_A;
+    uint8_t _DIO5_A;
+    uint8_t _DIO0_B;
+    uint8_t _DIO5_B;
+    uint8_t _moDule;
     uint8_t _registerSetting;
 
 
