@@ -1,0 +1,19 @@
+ /* WeMos D1 R2 mini pinout
+ *  Pin     Function                    ESP-8266 pin    Arduino Pin RMF9x
+ *  TX      TXD                           TXD           1
+ *  RX      RXD                           RXD           3
+ *  D0      IO                            GPIO16        16
+ *  D1      IO/SCL                        GPIO5         5
+ *  D2      IO/SDA                        GPIO4         4
+ *  D3      IO, 10K Pull Up               GPIO0         0
+ *  D4      IO, 10K Pull Up BUILTIN_LED   GPIO12        2
+ *  D5      IO, SCK                       GPIO14        14
+ *  D6      IO, MISO                      GPIO12        12
+ *  D7      IO, MOSI                      GPIO13        13
+ *  D8      IO, 10K Pull Down             GPIO15        15
+ *  A0      Analog input, Max 3.3V input  A0            A0
+ *  G       Ground                        GND
+ *  5V      5V
+ *  3V3     3.3V                          3.3V
+ *  RST     Reset                         RST
+*/
