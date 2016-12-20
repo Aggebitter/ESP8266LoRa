@@ -16,9 +16,13 @@ Rename the created folder to "ESP_LoRa" and copy the Example files "ESP_LoRa.ino
 
 SX127x SX127x(serialDebug) // 1 Enables, set in config.h
 
-SX127x.init(NSSpin); // max eight modules, New init for each module // will ad use of DIO1 and DIO5 
+SX127x.init(NSSpin, interrupt_DIO0, interrupt_DIO5); // max eight modules. I know that there are not 24 free IO's on ESP ;-) Do the math
 
-SX127x.single(Module#, address byte, data byte, (R)ead or (W)rite) // Works 6.625 us for 16bits transaction (address + payload)
+SX127x.init(NSSpin, interrupt_DIO0); // max eight modules, Still alot of IO missing on ESP 
+
+SX127x.init(NSSpin); // max eight modules, New init for each module. No interrupt pin used
+
+SX127x.single(Module#, address byte, data byte, (R)ead or (W)rite) // Works 6.625 us for 16bits transaction (address + payload) Interrupts not added
 
 SX127x.burst TODO
 
