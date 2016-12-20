@@ -11,7 +11,7 @@ SX127x	KEYWORD1
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-
+init    KEYWORD2
 single	KEYWORD2
 burst   KEYWORD2
 fifo    KEYWORD2

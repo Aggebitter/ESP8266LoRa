@@ -47,6 +47,7 @@ public:
     uint8_t init(uint8_t sx1276SelectPin);
     uint8_t single(uint8_t moDule, uint8_t registerSetting, uint8_t value, uint8_t Write);
     uint8_t burst();
+    uint8_t fifo();
     uint8_t serialDebug;
     uint8_t NumberOfModules;
     uint8_t state;
@@ -55,8 +56,9 @@ public:
     uint8_t value;
     uint8_t Write;
     uint8_t ackModule;
-    uint16_t _message;
+
 protected:
+
     uint8_t _serialDebug;
     uint8_t _NumberOfModules;
     uint8_t _sx1276SelectPin_A;
@@ -70,6 +72,7 @@ protected:
     uint8_t _DIO5_B;
     uint8_t _moDule;
     uint8_t _address;
+    uint8_t _replySPIsingle;
 
 
 
