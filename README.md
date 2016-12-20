@@ -2,7 +2,7 @@
 IoT With SemTech SX1276-79/HopeRF RFM9x and ESP6266 on Arduino
 
 
-Not LoRa or EU ISM-band compliable !!
+Not LoRa or EU ISM-band compliable !! Might be added as compile option
 
 In Windows with default Arduino IDE installation path
 
