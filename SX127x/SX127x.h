@@ -44,6 +44,8 @@ class SX127x
 {
 public:
     SX127x(uint8_t serialDebug);
+    uint8_t init(uint8_t sx1276SelectPin, uint8_t DIO0pin, uint8_t DIO5pin);
+    uint8_t init(uint8_t sx1276SelectPin, uint8_t DIO0pin);
     uint8_t init(uint8_t sx1276SelectPin);
     uint8_t single(uint8_t moDule, uint8_t registerSetting, uint8_t value, uint8_t Write);
     uint8_t burst();
@@ -61,9 +63,9 @@ protected:
 
     uint8_t _serialDebug;
     uint8_t _NumberOfModules;
-    uint8_t _sx1276SelectPin_A;
-    uint8_t _sx1276SelectPin_B;
     uint8_t _sx1276SelectPin;
+    uint8_t _DIO0pins[8];
+    uint8_t _DIO5pins[8];
     uint8_t _SelectPins[8];
     uint8_t _sx1276SelectPinCounter;
     uint8_t _DIO0_A;

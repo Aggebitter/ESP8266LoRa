@@ -12,17 +12,14 @@ SX127x::SX127x(uint8_t serialDebug)
     _sx1276SelectPinCounter = 0;
     _serialDebug = serialDebug;
     //_sx1276SelectPin = 255; // start up setting
-    //! reserves and resets 8 pins for modules
-    _SelectPins[0] = 255; // Used as counter, set to 0 at first init
-    _SelectPins[1] = 255; // first initiated  module
-    _SelectPins[2] = 255;
-    _SelectPins[3] = 255;
-    _SelectPins[4] = 255;
-    _SelectPins[5] = 255;
-    _SelectPins[6] = 255;
-    _SelectPins[7] = 255;
-    _SelectPins[8] = 255; // eight initiated Module
+    //! resets and fill array 8 pins for modules,  _SelectPins[0]is used as counter for pointer
+    for (int i=0; i <= 8; i++){_SelectPins[i] = 255; }
 
+    //! resets and fill array 8 pins for interrupt DIO0, _DIO0[0] is unused and wasted in user space as MP(Swedish foil hat party)
+    for (int i=0; i <= 8; i++){_DIO0pins[i] = 255; }
+
+    //! resets and fill array 8 pins for interrupt DIO5, _DIO5[0] is unused and wasted in user space as V(Swedish "not any more" communist foil hat party)
+    for (int i=0; i <= 8; i++){_DIO5pins[i] = 255; }
 
     if (serialDebug == 1 )
     {
@@ -36,6 +33,143 @@ SX127x::SX127x(uint8_t serialDebug)
 
 }
 
+uint8_t SX127x::init(uint8_t sx1276SelectPin, uint8_t DIO0pin, uint8_t DIO5pin)
+//! Use SX127x.init(NSSpin max 8 modules is supported by the driver
+{
+
+    if (_serialDebug == 1)
+    {
+        Serial.println();
+        Serial.println("Starting init function: ");
+    }
+    if (_SelectPins[0] == 9) // max amount of modules without expanding the array
+    {
+        //! this is a faulty state, will it ever happen ?
+
+
+    }
+    else if ( _SelectPins[0] == 255 ) // first modeule init
+    {
+        //! First module init
+        _SelectPins[0] = 1;
+
+        if (_serialDebug == 1)
+        {
+            Serial.print("First init _SelectPins[0]= ");
+            Serial.print(_SelectPins[0],DEC);
+        }
+
+        _SelectPins[_SelectPins[0]] = sx1276SelectPin ; //! puts select pin# to the right array
+        _DIO0pins[_DIO0pins[0]] = DIO0pin ;             //! puts interrupt DIO0 pin# to the right array
+        _DIO5pins[_DIO5pins[0]] = DIO5pin ;             //! puts interrupt DIO5 pin# to the right array
+        pinMode(_SelectPins[_SelectPins[0]], OUTPUT);
+        pinMode(_DIO0pins[_DIO0pins[0]], INPUT);
+        pinMode(_DIO5pins[_DIO5pins[0]], INPUT);
+        digitalWrite (_SelectPins[_SelectPins[0]], HIGH);
+
+        if (_serialDebug == 1)
+        {
+            Serial.print(" pinMode and digitalWrite LOW on pin: ");
+            Serial.println(_SelectPins[_SelectPins[0]],DEC);
+        }
+        state = 1 ;
+        return state;
+    }
+
+    else if (_SelectPins[0] <= 8) // Adding pin for each module init
+    {
+        _SelectPins[0] ++;
+
+        if (_serialDebug == 1)
+        {
+            Serial.print("Next init  _SelectPins[0]= ");
+            Serial.print(_SelectPins[0],DEC);
+        }
+
+        _SelectPins[_SelectPins[0]] = sx1276SelectPin ; //! puts select pin# to the right array
+        _DIO0pins[_DIO0pins[0]] = DIO0pin ;             //! puts interrupt DIO0 pin# to the right array
+        _DIO5pins[_DIO5pins[0]] = DIO5pin ;             //! puts interrupt DIO5 pin# to the right array
+        pinMode(_SelectPins[_SelectPins[0]], OUTPUT);
+        pinMode(_DIO0pins[_DIO0pins[0]], INPUT);
+        pinMode(_DIO5pins[_DIO5pins[0]], INPUT);
+        digitalWrite (_SelectPins[_SelectPins[0]], HIGH);
+
+        if (_serialDebug == 1)
+        {
+            Serial.print(" pinMode and digitalWrite LOW on pin: ");
+            Serial.println(_SelectPins[_SelectPins[0]],DEC);
+        }
+
+    }
+
+}
+
+uint8_t SX127x::init(uint8_t sx1276SelectPin, uint8_t DIO0pin)
+//! Use SX127x.init(NSSpin max 8 modules is supported by the driver
+{
+
+    if (_serialDebug == 1)
+    {
+        Serial.println();
+        Serial.println("Starting init function: ");
+    }
+    if (_SelectPins[0] == 9) // max amount of modules without expanding the array
+    {
+        //! this is a faulty state, will it ever happen ?
+
+
+    }
+    else if ( _SelectPins[0] == 255 ) // first modeule init
+    {
+        //! First module init
+        _SelectPins[0] = 1;
+
+        if (_serialDebug == 1)
+        {
+            Serial.print("First init _SelectPins[0]= ");
+            Serial.print(_SelectPins[0],DEC);
+        }
+
+        _SelectPins[_SelectPins[0]] = sx1276SelectPin ; //! puts select pin# to the right array
+        _DIO0pins[_DIO0pins[0]] = DIO0pin ;             //! puts interrupt DIO0 pin# to the right array
+        pinMode(_SelectPins[_SelectPins[0]], OUTPUT);
+        pinMode(_DIO0pins[_DIO0pins[0]], INPUT);
+        digitalWrite (_SelectPins[_SelectPins[0]], HIGH);
+
+        if (_serialDebug == 1)
+        {
+            Serial.print(" pinMode and digitalWrite LOW on pin: ");
+            Serial.println(_SelectPins[_SelectPins[0]],DEC);
+        }
+        state = 1 ;
+        return state;
+    }
+
+    else if (_SelectPins[0] <= 8) // Adding pin for each module init
+    {
+        _SelectPins[0] ++;
+
+        if (_serialDebug == 1)
+        {
+            Serial.print("Next init  _SelectPins[0]= ");
+            Serial.print(_SelectPins[0],DEC);
+        }
+
+        _SelectPins[_SelectPins[0]] = sx1276SelectPin ; //! puts select pin# to the right array
+        _DIO0pins[_DIO0pins[0]] = DIO0pin ;             //! puts interrupt DIO0 pin# to the right array
+        pinMode(_SelectPins[_SelectPins[0]], OUTPUT);
+        pinMode(_DIO0pins[_DIO0pins[0]], INPUT);
+        digitalWrite (_SelectPins[_SelectPins[0]], HIGH);
+
+        if (_serialDebug == 1)
+        {
+            Serial.print(" pinMode and digitalWrite LOW on pin: ");
+            Serial.println(_SelectPins[_SelectPins[0]],DEC);
+        }
+
+    }
+
+}
 
 uint8_t SX127x::init(uint8_t sx1276SelectPin)
 //! Use SX127x.init(NSSpin max 8 modules is supported by the driver
