@@ -47,6 +47,9 @@ public:
     uint8_t init(uint8_t sx1276SelectPin, uint8_t DIO0pin, uint8_t DIO5pin);
     uint8_t init(uint8_t sx1276SelectPin, uint8_t DIO0pin);
     uint8_t init(uint8_t sx1276SelectPin);
+    uint8_t modemLoRa(uint8_t BW, uint8_t SF, uint8_t CR);
+    uint8_t modemFSK(uint8_t BW);
+    uint8_t modemOOK(uint8_t BW);
     uint8_t single(uint8_t moDule, uint8_t registerSetting, uint8_t value, uint8_t Write);
     uint8_t burst();
     uint8_t fifo();

@@ -13,13 +13,22 @@ SX127x::SX127x(uint8_t serialDebug)
     _serialDebug = serialDebug;
     //_sx1276SelectPin = 255; // start up setting
     //! resets and fill array 8 pins for modules,  _SelectPins[0]is used as counter for pointer
-    for (int i=0; i <= 8; i++){_SelectPins[i] = 255; }
+    for (int i=0; i <= 8; i++)
+    {
+        _SelectPins[i] = 255;
+    }
 
     //! resets and fill array 8 pins for interrupt DIO0, _DIO0[0] is unused and wasted in user space as MP(Swedish foil hat party)
-    for (int i=0; i <= 8; i++){_DIO0pins[i] = 255; }
+    for (int i=0; i <= 8; i++)
+    {
+        _DIO0pins[i] = 255;
+    }
 
     //! resets and fill array 8 pins for interrupt DIO5, _DIO5[0] is unused and wasted in user space as V(Swedish "not any more" communist foil hat party)
-    for (int i=0; i <= 8; i++){_DIO5pins[i] = 255; }
+    for (int i=0; i <= 8; i++)
+    {
+        _DIO5pins[i] = 255;
+    }
 
     if (serialDebug == 1 )
     {
@@ -34,7 +43,7 @@ SX127x::SX127x(uint8_t serialDebug)
 }
 
 uint8_t SX127x::init(uint8_t sx1276SelectPin, uint8_t DIO0pin, uint8_t DIO5pin)
-//! Use SX127x.init(NSSpin max 8 modules is supported by the driver
+//! Use SX127x.init(NSSpin, interrupt_DIO0pin, interrupt_DIO5pin) max 8 modules is supported by the driver
 {
 
     if (_serialDebug == 1)
@@ -105,7 +114,7 @@ uint8_t SX127x::init(uint8_t sx1276SelectPin, uint8_t DIO0pin, uint8_t DIO5pin)
 }
 
 uint8_t SX127x::init(uint8_t sx1276SelectPin, uint8_t DIO0pin)
-//! Use SX127x.init(NSSpin max 8 modules is supported by the driver
+//! Use SX127x.init(NSSpin, interrupt_DIO0pin) max 8 modules is supported by the driver
 {
 
     if (_serialDebug == 1)
@@ -172,7 +181,7 @@ uint8_t SX127x::init(uint8_t sx1276SelectPin, uint8_t DIO0pin)
 }
 
 uint8_t SX127x::init(uint8_t sx1276SelectPin)
-//! Use SX127x.init(NSSpin max 8 modules is supported by the driver
+//! Use SX127x.init(NSSpin) max 8 modules is supported by the driver
 {
 
     if (_serialDebug == 1)
@@ -235,17 +244,59 @@ uint8_t SX127x::init(uint8_t sx1276SelectPin)
 
 }
 
+uint8_t SX127x::modemLoRa(uint8_t BW, uint8_t SF, uint8_t CR)
+//! Not done yet !!!!
+{
+
+    SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0)); // set up hardware SPI for SX127x
+    if (serialDebug == 1)
+    {
+        Serial.println("SX127x::TX  :");
+    }
+    state = 1;
+    delay(250);
+    return state;
+}
+
+uint8_t SX127x::modemFSK(uint8_t BW)
+//! Not done yet !!!!
+{
+
+    SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0)); // set up hardware SPI for SX127x
+    if (serialDebug == 1)
+    {
+        Serial.println("SX127x::TX  :");
+    }
+    state = 1;
+    delay(250);
+    return state;
+}
+
+uint8_t SX127x::modemOOK(uint8_t BW)
+//! Not done yet !!!!
+{
+
+    SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0)); // set up hardware SPI for SX127x
+    if (serialDebug == 1)
+    {
+        Serial.println("SX127x::TX  :");
+    }
+    state = 1;
+    delay(250);
+    return state;
+}
+
 uint8_t SX127x::single(uint8_t moDule, uint8_t address, uint8_t value, uint8_t Write)
 //! (Module#, address byte, data byte, 0 = Read or 1 = write from or to register)
 {
 
     //! Set up SPI for SX127x
-/*
-    SPI.begin();
-    SPI.setBitOrder(MSBFIRST);
-    SPI.setFrequency(10000000); // MAX 10000000Hz (10MHz) for SX127x
-    SPI.setDataMode(SPI_MODE0);
-*/
+    /*
+        SPI.begin();
+        SPI.setBitOrder(MSBFIRST);
+        SPI.setFrequency(10000000); // MAX 10000000Hz (10MHz) for SX127x
+        SPI.setDataMode(SPI_MODE0);
+    */
     SPI.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
     if (Write == 1)
     {
@@ -256,11 +307,11 @@ uint8_t SX127x::single(uint8_t moDule, uint8_t address, uint8_t value, uint8_t W
 
     if (_serialDebug == 1)
     {
-    Serial.print("Message to Module: ");
-    Serial.print(_moDule);
-    Serial.print(address, HEX);
-    Serial.print(" using NSS pin : ");
-    Serial.print(_SelectPins[moDule]);
+        Serial.print("Message to Module: ");
+        Serial.print(_moDule);
+        Serial.print(address, HEX);
+        Serial.print(" using NSS pin : ");
+        Serial.print(_SelectPins[moDule]);
     }
 
     //! Do the transfer on SPI
@@ -274,15 +325,17 @@ uint8_t SX127x::single(uint8_t moDule, uint8_t address, uint8_t value, uint8_t W
     digitalWrite (_SelectPins[moDule], HIGH);  //! NSS hold time, From SCK falling edge to NSS rising edge, normal mode 100ns SX1276-79 spec
     if (_serialDebug == 1)
     {
-    Serial.print("    Got reply:");
-    Serial.println(_replySPIsingle, HEX);
+        Serial.print("    Got reply:");
+        Serial.println(_replySPIsingle, HEX);
     }
     state = 1;
+    // SPI.end();
     SPI.endTransaction();
     return _replySPIsingle;
 }
 
 uint8_t SX127x::burst()
+//! Not done yet !!!!
 {
     SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0)); // set up hardware SPI for SX127x
     if (serialDebug == 1)
@@ -295,6 +348,7 @@ uint8_t SX127x::burst()
 }
 
 uint8_t SX127x::fifo()
+//! Not done yet !!!!
 {
     SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0)); // set up hardware SPI for SX127x
     if (serialDebug == 1)
