@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
-#include <Arduino.h>
+#include "Arduino.h"
 #include <SPI.h>
 
 #include <sx127xRegs-LoRa.h>
@@ -12,53 +12,58 @@
 
 //! CONFIG
 
-#define SX1272_debug_mode 0
-#define mode 'L'
-#define USE_DIO0  // TX RX complete
-#define USE_DIO5  // Mode change complete
-#define dualLora
-#define sx1276SelectPin_A 15
+// #define SX1272_debug_mode 0 // fixed in init
+//#define mode 'L'
+//#define USE_DIO0  // TX RX complete
+//#define USE_DIO5  // Mode change complete
+//#define dualLora
+//#define sx1276SelectPin_A 15
 
-#if defined USE_DIO0
-#define DIO0_A 2
-#endif
+//#if defined USE_DIO0
+//#define DIO0_A 2
+//#endif
 
-#if defined USE_DIO5
-#define DIO5_A 0
-#endif
+//#if defined USE_DIO5
+//#define DIO5_A 0
+//#endif
 
-#if defined dualLora
-#define sx1276SelectPin_B 16;
+//#if defined dualLora
+//#define sx1276SelectPin_B 16;
 
-#if defined USE_DIO0
-#define DIO0_B 4; // TX RX complete
-#endif
+//#if defined USE_DIO0
+//#define DIO0_B 4; // TX RX complete
+//#endif
 
-#if defined USE_DIO5
-#define DIO5_B 5; // Mode change complete
-#endif
-#endif
+//#if defined USE_DIO5
+//#define DIO5_B 5; // Mode change complete
+//#endif
+//#endif
 
 
 class SX127x
 {
 public:
-    SX127x(uint8_t NumberOfModules);
-    uint8_t single(uint8_t moDule, uint8_t registerSetting, uint8_t value, uint8_t ReadOrWrite);
+    SX127x(uint8_t serialDebug);
+    uint8_t init(uint8_t sx1276SelectPin);
+    uint8_t single(uint8_t moDule, uint8_t registerSetting, uint8_t value, uint8_t Write);
     uint8_t burst();
-    uint8_t fifo();
+    uint8_t serialDebug;
+    uint8_t NumberOfModules;
     uint8_t state;
     uint8_t moDule;
     uint8_t address;
     uint8_t value;
-    uint8_t ReadOrWrite;
+    uint8_t Write;
     uint8_t ackModule;
     uint16_t _message;
 protected:
+    uint8_t _serialDebug;
     uint8_t _NumberOfModules;
     uint8_t _sx1276SelectPin_A;
     uint8_t _sx1276SelectPin_B;
     uint8_t _sx1276SelectPin;
+    uint8_t _SelectPins[8];
+    uint8_t _sx1276SelectPinCounter;
     uint8_t _DIO0_A;
     uint8_t _DIO5_A;
     uint8_t _DIO0_B;
