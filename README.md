@@ -14,7 +14,9 @@ Rename the crated folder to "ESP_LoRa" and copy the file "ESP_LoRa.ino" in to it
 
 # Usage:
 
-SX127x(NumberOfModules) // two suported at the moment not verified
+SX127x SX127x(serialDebug) // 1 Enables, set in config.h
+
+SX127x.init(NSSpin); // max eight modules, New init for each module
 
 SX127x.single(Module#, address byte, data byte, (R)ead or (W)rite) // Works sort of
 
