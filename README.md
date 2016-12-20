@@ -16,9 +16,9 @@ Rename the created folder to "ESP_LoRa" and copy the Example files "ESP_LoRa.ino
 
 SX127x SX127x(serialDebug) // 1 Enables, set in config.h
 
-SX127x.init(NSSpin); // max eight modules, New init for each module
+SX127x.init(NSSpin); // max eight modules, New init for each module // will ad use of DIO1 and DIO5 
 
-SX127x.single(Module#, address byte, data byte, (R)ead or (W)rite) // Works sort of
+SX127x.single(Module#, address byte, data byte, (R)ead or (W)rite) // Works 6.625 us for 16bits transaction (address + payload)
 
 SX127x.burst TODO
 
