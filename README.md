@@ -10,7 +10,7 @@ Install SX12x folder under C:\Program Files (x86)\Arduino\libraries\
 
 Create a new folder under C:\Users\User\Documents\Arduino (replace User with our username)
 
-Rename the crated folder to "ESP_LoRa" and copy the file "ESP_LoRa.ino" in to it
+Rename the created folder to "ESP_LoRa" and copy the Example files "ESP_LoRa.ino and config.h" in to it
 
 # Usage:
 
